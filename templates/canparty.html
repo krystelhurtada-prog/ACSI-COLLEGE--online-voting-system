@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Candidates & Partylist</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #111;
+        }
+
+        /* HEADER */
+        .header {
+            background: #b30000;
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 14px;
+        }
+
+        /* CONTAINER */
+        .container {
+            width: 92%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        /* BACK BUTTON */
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 12px 22px;
+            background: #b30000;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+            border-radius: 6px;
+        }
+
+        .back-btn:hover {
+            background: #8f0000;
+        }
+
+        /* FORMS */
+        .forms {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        /* CARD */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #b30000;
+            font-size: 21px;
+        }
+
+        /* FORM */
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            margin-bottom: 17px;
+            background: white;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #b30000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #8f0000;
+        }
+
+        /* FLASH MESSAGE */
+        .message {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .success {
+            background: #e5ffe5;
+            color: #176b17;
+        }
+
+        .error {
+            background: #ffe5e5;
+            color: #b30000;
+        }
+
+        /* CANDIDATE FORM */
+        .candidate-position {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .candidate-position label {
+            margin-bottom: 0;
+        }
+
+        .candidate-position input {
+            margin-bottom: 0;
+        }
+
+        .partylist-select {
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .partylist-select select {
+            margin-bottom: 20px;
+        }
+
+        /* SECTION TITLE */
+        .section-title {
+            color: #b30000;
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        /* REGISTERED PARTYLIST */
+        .partylist-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+            border-left: 5px solid #b30000;
+        }
+
+        .partylist-name {
+            color: #b30000;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        /* DELETE BUTTON */
+        .delete-btn {
+            width: auto !important;
+            display: inline-block;
+            padding: 12px 22px;
+            background: #b30000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .delete-btn:hover {
+            background: #8f0e15;
+        }
+
+        /* PLATFORM */
+        .platform-title {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .platform {
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            white-space: pre-line;
+        }
+
+        /* CANDIDATES TABLE */
+        .members-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #111;
+        }
+
+        .candidate-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+
+        .candidate-table th {
+            background: #111;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .candidate-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .candidate-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .candidate-table tr:nth-child(even) {
+            background: #f5f5f5;
+        }
+
+        .candidate-name {
+            font-weight: bold;
+        }
+
+        .position {
+            color: #b30000;
+            font-weight: bold;
+        }
+
+        .no-members {
+            color: #777;
+            font-style: italic;
+            padding: 10px 0;
+        }
+
+        /* MOBILE */
+        @media (max-width: 750px) {
+
+            .container {
+                width: 94%;
+            }
+
+            .candidate-position {
+                grid-template-columns: 1fr;
+                gap: 6px;
+            }
+
+            .candidate-position label {
+                margin-bottom: 2px;
+            }
+
+            .candidate-table {
+                font-size: 14px;
+            }
+
+            .candidate-table th,
+            .candidate-table td {
+                padding: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>ACSI COLLEGE ILOILO</h1>
+        <p>ONLINE VOTING SYSTEM</p>
+    </div>
+
+
+    <div class="container">
+
+        <!-- BACK TO DASHBOARD -->
+        {% if session.get('admin_logged_in') %}
+
+            <a href="{{ url_for('dashboard') }}" class="back-btn">
+                BACK TO DASHBOARD
+            </a>
+
+        {% else %}
+
+            <a href="{{ url_for('vdashboard') }}" class="back-btn">
+                BACK TO DASHBOARD
+            </a>
+
+        {% endif %}
+
+
+        <!-- FLASH MESSAGES -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- ========================= -->
+        <!-- REGISTERED PARTYLISTS -->
+        <!-- ========================= -->
+
+        <h2 class="section-title">
+            Registered Partylists
+        </h2>
+
+
+        {% if partylists %}
+
+            {% for partylist in partylists %}
+
+                <div class="partylist-card">
+
+                    <!-- PARTYLIST NAME -->
+                    <div class="partylist-name">
+                        {{ partylist['partylist_name'] }}
+                    </div>
+
+
+                   
+                    <div class="Platform">
+                        {{ partylist['Platform'] or 'No platform provided' }}
+                    </div>
+
+
+                    <!-- ========================= -->
+                    <!-- ADMIN ONLY DELETE BUTTON -->
+                    <!-- ========================= -->
+
+                    {% if session.get('admin_logged_in') %}
+
+                        <form
+                            action="{{ url_for('delete_partylist', partylist_id=partylist['id']) }}"
+                            method="POST"
+                            onsubmit="return confirm('Delete this partylist?');"
+                        >
+
+                            <button
+                                type="submit"
+                                class="delete-btn"
+                            >
+                                Delete Partylist
+                            </button>
+
+                        </form>
+
+                    {% endif %}
+
+
+                    <!-- ========================= -->
+                    <!-- PARTYLIST MEMBERS -->
+                    <!-- ========================= -->
+
+                    
+
+                    {% set party_members = [] %}
+
+
+                    {% for candidate in candidates %}
+
+                        {% if candidate['partylist_id'] == partylist['id'] %}
+
+                            {% set _ = party_members.append(candidate) %}
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    {% if party_members %}
+
+                        <table class="candidate-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Candidate Name
+                                    </th>
+
+                                    <th>
+                                        Position
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for candidate in party_members %}
+
+                                    <tr>
+
+                                        <td class="candidate-name">
+                                            {{ candidate['full_name'] }}
+                                        </td>
+
+                                        <td class="position">
+                                            {{ candidate['position_name'] }}
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+
+                    {% else %}
+
+                        <div class="no-members">
+                            No candidates added yet.
+                        </div>
+
+                    {% endif %}
+
+
+                </div>
+
+            {% endfor %}
+
+
+        {% else %}
+
+            <div class="card">
+
+                <p>
+                    No partylists registered yet.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Council Election</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #111;
+        }
+
+        .header {
+            background: #b30000;
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 15px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 30px auto;
+        }
+
+        .student-info {
+            background: #111;
+            color: white;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .student-info p {
+            margin: 6px 0;
+        }
+
+        .position {
+            background: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 6px solid #b30000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .position h2 {
+            margin-bottom: 15px;
+            color: #b30000;
+            font-size: 21px;
+            text-transform: capitalize;
+        }
+
+        .candidate {
+            display: block;
+            background: #f1f1f1;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .candidate:hover {
+            background: #ddd;
+        }
+
+        .candidate input {
+            margin-right: 10px;
+        }
+
+        .no-candidate {
+            color: #777;
+            font-style: italic;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #b30000;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+
+        .submit-btn:hover {
+            background: #8f0000;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>ACSI COLLEGE ILOILO</h1>
+
+        <p>ONLINE VOTING SYSTEM</p>
+
+    </div>
+
+
+    <div class="container">
+
+        <!-- STUDENT INFORMATION -->
+
+        <div class="student-info">
+
+            <p>
+                <strong>Student Name:</strong>
+                {{ student_name }}
+            </p>
+
+            <p>
+                <strong>Student ID:</strong>
+                {{ student_id }}
+            </p>
+
+            <p>
+                <strong>Course:</strong>
+                {{ course }}
+            </p>
+
+        </div>
+
+
+        <form action="{{ url_for('submit_vote') }}" method="POST">
+
+            <!-- STUDENT ID -->
+
+            <input
+                type="hidden"
+                name="student_id"
+                value="{{ student_id }}"
+            >
+
+
+            <!-- ================================= -->
+            <!-- MAIN POSITIONS -->
+            <!-- ================================= -->
+
+            {% for position in positions %}
+
+                {% set position_name = position.position_name|upper %}
+
+                {% if 'REPRESENTATIVE' not in position_name %}
+
+                    <div class="position">
+
+                        <h2>
+                            {{ position.position_name }}
+                        </h2>
+
+
+                        {% if position.candidates %}
+
+                            {% for candidate in position.candidates %}
+                            
+                                <label class="candidate">
+
+                                    <input
+                                        type="radio"
+                                        name="position_{{ position.id }}"
+                                        value="{{ candidate.full_name }}"
+                                        required
+                                    >
+
+                                    {{ candidate.full_name }}
+
+                                </label>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <p class="no-candidate">
+                                No candidates available for this position.
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+
+            <!-- ================================= -->
+            <!-- REPRESENTATIVE -->
+            <!-- ================================= -->
+
+            {% for position in positions %}
+
+                {% set position_name = position.position_name|upper %}
+                {% set voter_course = course|upper|trim %}
+
+                {% if 'REPRESENTATIVE' in position_name %}
+
+                    {% if voter_course in position_name %}
+
+                        <div class="position">
+
+                            <h2>
+                                {{ position.position_name }}
+                            </h2>
+
+
+                            {% if position.candidates %}
+
+                                {% for candidate in position.candidates %}
+
+                                    <label class="candidate">
+
+                                        <input
+                                            type="radio"
+                                            name="position_{{ position.id }}"
+                                            value="{{ candidate.full_name }}"
+                                            required
+                                        >
+
+                                        {{ candidate.full_name }}
+
+                                    </label>
+
+                                {% endfor %}
+
+                            {% else %}
+
+                                <p class="no-candidate">
+                                    No candidates available for this position.
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+                {% endif %}
+
+            {% endfor %}
+
+
+            <!-- SUBMIT -->
+
+            <button type="submit" class="submit-btn">
+                SUBMIT VOTE
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

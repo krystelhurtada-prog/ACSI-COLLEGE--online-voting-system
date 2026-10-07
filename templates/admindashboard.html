@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Dashboard | ACSI College Iloilo</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background: #f4f4f4;
+        color: #111;
+    }
+
+    /* HEADER */
+    .header {
+        background: #b00000;
+        color: white;
+        padding: 35px 20px;
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 30px;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    .header p {
+        font-size: 17px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    /* CONTAINER */
+    .container {
+        max-width: 950px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    /* WELCOME */
+    .welcome {
+        background: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-left: 6px solid #b00000;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+    }
+
+    .welcome h2 {
+        color: #b00000;
+        margin-bottom: 8px;
+    }
+
+    .welcome p {
+        color: #666;
+        font-size: 15px;
+    }
+
+    /* DASHBOARD */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .card {
+        background: white;
+        padding: 30px 25px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+        border-top: 5px solid #b00000;
+    }
+
+    
+
+    .card h3 {
+        color: #b00000;
+        font-size: 21px;
+        margin-bottom: 10px;
+    }
+
+    .card p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .card a {
+        display: inline-block;
+        background: #b00000;
+        color: white;
+        text-decoration: none;
+        padding: 12px 25px;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+
+    .card a:hover {
+        background: #800000;
+    }
+
+    /* FULL WIDTH RESULTS */
+    .results-card {
+        grid-column:auto;
+    }
+
+    /* LOGOUT */
+    .logout {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .logout a {
+        display: inline-block;
+        background: #111;
+        color: white;
+        text-decoration: none;
+        padding: 13px 40px;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+
+    .logout a:hover {
+        background: #333;
+    }
+
+    /* FOOTER */
+    .footer {
+        text-align: center;
+        margin-top: 45px;
+        padding: 20px;
+        color: #777;
+        font-size: 13px;
+    }
+
+    /* MOBILE */
+    @media (max-width: 650px) {
+
+        .header {
+            padding: 28px 15px;
+        }
+
+        .header h1 {
+            font-size: 23px;
+        }
+
+        .header p {
+            font-size: 14px;
+        }
+
+        .container {
+            margin-top: 25px;
+        }
+
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .results-card {
+            grid-column: auto;
+        }
+
+        .card {
+            padding: 25px 20px;
+        }
+    }
+</style>
+
+</head><body><!-- HEADER -->
+<div class="header">
+    <h1>ACSI COLLEGE ILOILO</h1>
+    <p>ONLINE VOTING SYSTEM</p>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+    <!-- WELCOME -->
+    <div class="welcome">
+        <h2>Admin Dashboard</h2>
+        <p>Manage and monitor the Student Council Election System.</p>
+    </div>
+
+    <!-- DASHBOARD CARDS -->
+    <div class="dashboard-grid">
+
+        <!-- VIEW VOTERS -->
+        <div class="card">
+            <h3>View Voters</h3>
+            <p>
+                View all registered voters and check their voting status.
+            </p>
+
+            <a href="{{ url_for('view_voters') }}">
+                View Voters
+            </a>
+        </div>
+
+        <!--  VIEW CANDIDATES & PARTYLIST -->
+        <div class="card">
+            <h3>View Candidates & Partylists</h3>
+            <p>
+                View  registered candidates and partylist.
+            </p>
+
+            <a href="{{ url_for('canparty') }}">
+                View Candidates & Partylists
+            </a>
+        </div>
+
+
+
+
+
+
+
+
+        <!-- MANAGE CANDIDATES -->
+        <div class="card">
+            <h3>Manage Candidates</h3>
+            <p>
+                 Add and manage candidates and partylist.
+            </p>
+
+            <a href="{{ url_for('managecandidates') }}">
+                Manage Candidates
+            </a>
+        </div>
+
+        <!-- VIEW RESULTS -->
+        <div class="card results-card">
+            <h3>View Results</h3>
+            <p>
+                View election results and vote counts for every position.
+            </p>
+
+            <a href="{{ url_for('results') }}">
+                View Results
+            </a>
+        </div>
+
+    </div>
+
+    <!-- LOGOUT -->
+    <div class="logout">
+        <a href="{{ url_for('admin_logout') }}">
+            Log Out
+        </a>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        ACSI College Iloilo Online Voting System
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Registration</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .register-box {
+            width: 90%;
+            max-width: 450px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .header {
+            background: #b30000;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .header h1 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+        }
+
+        .form-container {
+            padding: 30px;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #111;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border: 2px solid #b30000;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background: #b30000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .register-btn:hover {
+            background: #8f0000;
+        }
+
+        .login-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .login-text p {
+            margin-bottom: 6px;
+        }
+
+        .login-text a {
+            color: #b30000;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .login-text a:hover {
+            text-decoration: underline;
+        }
+
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #b30000;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            color: #b30000;
+        }
+
+        .error {
+            background: #ffe5e5;
+            color: #b30000;
+            padding: 12px;
+            margin-bottom: 18px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .success {
+            background: #e5ffe5;
+            color: #176b17;
+            padding: 12px;
+            margin-bottom: 18px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .generated-input {
+            background: #f5f5f5;
+            color: #b30000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="register-box">
+
+        <div class="header">
+            <h1>ACSI COLLEGE ILOILO</h1>
+            <p>ONLINE VOTING SYSTEM</p>
+        </div>
+
+        <div class="form-container">
+
+            <h2>Student Registration</h2>
+
+            <!-- FLASH MESSAGES -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+
+                        {% if category == "success" %}
+                            <div class="success">
+                                {{ message }}
+                            </div>
+                        {% else %}
+                            <div class="error">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="/register" method="POST">
+
+                <!-- STUDENT ID -->
+                <label for="student_id">
+                    Student ID
+                </label>
+
+                <input
+                    type="text"
+                    name="student_id"
+                    id="student_id"
+                    placeholder="Enter exactly 9 digits"
+                    inputmode="numeric"
+                    maxlength="9"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9)"
+                    required
+                >
+
+                <small id="student-id-error"
+                       style="color:red; display:none;">
+                    please enter exactly 9 digits.
+                </small>
+
+                <!-- FULL NAME -->
+                <label for="student_name">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="student_name"
+                    name="student_name"
+                    placeholder="Enter your Full Name"
+                    required
+                >
+
+                <!-- COURSE -->
+                <label for="course">
+                    Course
+                </label>
+
+                <select id="course" name="course" required>
+
+                    <option value="" disabled selected>
+                        Select your Course
+                    </option>
+
+                    <option value="BSCS">
+                        BSCS
+                    </option>
+
+                    <option value="BSIS">
+                        BSIS
+                    </option>
+
+                    <option value="ACT">
+                        ACT
+                    </option>
+
+                    <option value="SHS">
+                        SHS
+                    </option>
+
+                </select>
+
+                <!-- GENERATED PASSWORD -->
+                <label for="generated_password">
+                    Password
+                </label>
+
+                <input
+                    type="text"
+                    id="generated_password"
+                    name="generated_password"
+                    class="generated-input"
+                    placeholder="Automatically generated"
+                    readonly
+                    required
+                >
+
+                <button type="submit" class="register-btn">
+                    REGISTER
+                </button>
+
+            </form>
+
+            <div class="login-text">
+                <p>Already have an account?</p>
+
+                <a href="/vlogin">
+                    Login here
+                </a>
+            </div>
+
+            <a href="/" class="back-btn">
+                Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+    <script>
+        const studentName = document.getElementById("student_name");
+        const generatedPassword =
+            document.getElementById("generated_password");
+
+        studentName.addEventListener("input", function () {
+
+            const fullName = studentName.value.trim();
+
+            if (fullName === "") {
+                generatedPassword.value = "";
+                return;
+            }
+
+            // Get first name only
+            const firstName = fullName.split(/\s+/)[0];
+
+            generatedPassword.value = firstName;
+        });
+    </script>
+
+</body>
+</html>
