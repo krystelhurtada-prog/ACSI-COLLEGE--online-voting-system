@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ACSI College Iloilo Online Voting System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #000;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #d60000;
+            padding: 25px;
+            text-align: center;
+            border-bottom: 5px solid white;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .header p {
+            margin-top: 8px;
+            font-size: 16px;
+        }
+
+        .container {
+            min-height: calc(100vh - 120px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            color: black;
+            width: 100%;
+            max-width: 500px;
+            padding: 45px 35px;
+            text-align: center;
+            border-radius: 12px;
+            border-top: 10px solid #d60000;
+            box-shadow: 0 10px 30px rgba(255,255,255,0.15);
+        }
+
+        .card h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .voter-btn {
+            background: #d60000;
+            color: white;
+        }
+
+        .admin-btn {
+            background: #000;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #aaa;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>ACSI COLLEGE ILOILO</h1>
+        <p>ONLINE VOTING SYSTEM</p>
+    </div>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h2>Welcome!</h2>
+
+            <p>
+                Student Council Election
+            </p>
+
+            <a href="/vlogin" class="btn voter-btn">
+                VOTER LOGIN
+            </a>
+
+            <a href="/adminlogin" class="btn admin-btn">
+                ADMIN LOGIN
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © 2026 ACSI College Iloilo
+    </div>
+
+</body>
+</html>
