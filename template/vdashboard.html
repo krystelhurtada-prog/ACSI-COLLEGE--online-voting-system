@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Voter Dashboard</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        color: #111;
+    }
+
+    .header {
+        background: #b30000;
+        color: white;
+        padding: 25px 20px;
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 27px;
+        margin-bottom: 6px;
+    }
+
+    .header p {
+        font-size: 14px;
+    }
+
+    .container {
+        width: 92%;
+        max-width: 900px;
+        margin: 35px auto;
+    }
+
+    .welcome {
+        background: white;
+        padding: 20px;
+        border-left: 6px solid #b30000;
+        margin-bottom: 25px;
+        border-radius: 6px;
+    }
+
+    .welcome h2 {
+        margin-bottom: 10px;
+    }
+
+    .welcome p {
+        margin: 5px 0;
+    }
+
+    .dashboard {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .dashboard-card {
+        background: white;
+        padding: 30px 20px;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    .dashboard-card h2 {
+        color: #b30000;
+        margin-bottom: 12px;
+        font-size: 21px;
+    }
+
+    .dashboard-card p {
+        margin-bottom: 20px;
+        color: #555;
+        font-size: 14px;
+    }
+
+    .dashboard-btn {
+        display: block;
+        padding: 13px;
+        background: #b30000;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+
+    .dashboard-btn:hover {
+        background: #8f0000;
+    }
+
+    .logout {
+        display: block;
+        width: 100%;
+        max-width: 250px;
+        margin: 30px auto 0;
+        padding: 13px;
+        background: #111;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+
+    .logout:hover {
+        background: #333;
+    }
+
+    @media (max-width: 750px) {
+
+        .dashboard {
+            grid-template-columns: 1fr;
+        }
+
+        .container {
+            width: 94%;
+        }
+    }
+</style>
+
+</head><body><div class="header">
+
+    <h1>ACSI COLLEGE ILOILO</h1>
+
+    <p>ONLINE VOTING SYSTEM</p>
+
+</div>
+
+
+<div class="container">
+
+    <div class="welcome">
+
+        <h2>Welcome, {{ student_name }}</h2>
+
+        <p>
+            <strong>Student ID:</strong>
+            {{ student_id }}
+        </p>
+
+        <p>
+            <strong>Course:</strong>
+            {{ course }}
+        </p>
+
+    </div>
+
+
+    <div class="dashboard">
+
+        <!-- VOTING PAGE -->
+
+        <div class="dashboard-card">
+
+            <h2>Voting Page</h2>
+
+            <p>Cast your vote for the student council election.</p>
+
+            {% if status == 'Voted' %}
+
+                <span class="dashboard-btn"
+                      style="background:#777; cursor:not-allowed;">
+                    Already Voted
+                </span>
+
+            {% else %}
+
+                <a href="{{ url_for('votingpage') }}"
+                   class="dashboard-btn">
+                    Vote Now
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- PARTYLIST -->
+
+        <div class="dashboard-card">
+
+            <h2>Partylist</h2>
+
+            <p>View the registered partylists, platforms, and members.</p>
+
+            <a href="{{ url_for('canparty') }}"
+               class="dashboard-btn">
+                View Partylist
+            </a>
+
+        </div>
+
+
+        <!-- RESULTS -->
+
+        <div class="dashboard-card">
+
+            <h2>Results</h2>
+
+            <p>View the current election results.</p>
+
+            <a href="{{ url_for('results') }}"
+               class="dashboard-btn">
+                View Results
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <a href="{{ url_for('vlogin') }}" class="logout">
+        LOGOUT
+    </a>
+
+</div>
+
+</body></html>

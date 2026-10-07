@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vote Confirmation</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #111;
+        }
+
+        /* HEADER */
+
+        .header {
+            background: #b30000;
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 15px;
+        }
+
+        /* CONTAINER */
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 30px auto;
+        }
+
+        /* SUCCESS MESSAGE */
+
+        .success {
+            background: #111;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .success h2 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        /* VOTER INFORMATION */
+
+        .student-info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 6px solid #b30000;
+        }
+
+        .student-info p {
+            margin: 8px 0;
+        }
+
+        /* SELECTED VOTES */
+
+        .votes {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 6px solid #b30000;
+        }
+
+        .votes h2 {
+            color: #111;
+            margin-bottom: 15px;
+        }
+
+        /* VOTE ROW */
+
+        .vote-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px;
+            margin: 8px 0;
+            background: #f1f1f1;
+            border-radius: 6px;
+            gap: 15px;
+        }
+
+        .position-name {
+            font-weight: bold;
+            text-transform: capitalize;
+            color: #b30000;
+        }
+
+        .candidate-name {
+            font-weight: bold;
+            color: #111;
+            text-align: right;
+        }
+
+        /* BACK TO DASHBOARD BUTTON */
+
+        .back {
+            display: block;
+            width: fit-content;
+            margin: 30px auto 0;
+            padding: 13px 25px;
+            background: #b30000;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .back:hover {
+            background: #8f0000;
+            color: white;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 94%;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .vote-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .candidate-name {
+                text-align: left;
+            }
+
+            .back {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>ACSI COLLEGE ILOILO</h1>
+
+        <p>ONLINE VOTING SYSTEM</p>
+
+    </div>
+
+
+    <div class="container">
+
+        <!-- SUCCESS MESSAGE -->
+
+        <div class="success">
+
+            <h2>VOTE SUBMITTED SUCCESSFULLY!</h2>
+
+            <p>Your vote has been recorded.</p>
+
+        </div>
+
+
+        <!-- VOTER INFORMATION -->
+
+        <div class="student-info">
+
+            <p>
+                <strong>Student Name:</strong>
+                {{ student_name }}
+            </p>
+
+            <p>
+                <strong>Student ID:</strong>
+                {{ student_id }}
+            </p>
+
+            <p>
+                <strong>Course:</strong>
+                {{ course }}
+            </p>
+
+        </div>
+
+
+        <!-- SELECTED VOTES -->
+
+        <div class="votes">
+
+            <h2>Your Selected Candidates</h2>
+
+            {% if selected_votes %}
+
+                {% for position, candidate in selected_votes.items() %}
+
+                    <div class="vote-row">
+
+                        <span class="position-name">
+                            {{ position }}
+                        </span>
+
+                        <span class="candidate-name">
+                            {{ candidate }}
+                        </span>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>No selected candidates found.</p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- BACK TO DASHBOARD -->
+
+        <a href="{{ url_for('vdashboard') }}" class="back">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</body>
+
+</html>

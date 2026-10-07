@@ -1,0 +1,481 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Candidates & Partylist</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        color: #111;
+    }
+
+    .header {
+        background: #b30000;
+        color: white;
+        padding: 25px 30px;
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 26px;
+        margin-bottom: 6px;
+    }
+
+    .header p {
+        font-size: 14px;
+    }
+
+    .container {
+        width: 92%;
+        max-width: 1100px;
+        margin: 30px auto;
+    }
+
+    
+
+    .back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 12px 22px;
+    background: #b30000;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 6px;
+}
+
+.back-btn:hover {
+    background: #8f0000;
+}
+
+    
+    .forms {
+        display: flex;
+        flex-direction:column;
+        gap: 25px;
+        margin-bottom:35px;
+    }
+
+    .card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    .card h2 {
+        margin-bottom: 20px;
+        color: #b30000;
+        font-size: 21px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 7px;
+    }
+
+    input,
+    textarea,
+    select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 15px;
+        margin-bottom: 17px;
+        background: white;
+    }
+
+    textarea {
+        height: 120px;
+        resize: vertical;
+    }
+
+     button {
+        width: 100%;
+        padding: 13px;
+        background: #b30000;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #8f0000;
+    }
+
+
+    .message {
+        padding: 12px;
+        margin-bottom: 20px;
+        border-radius: 6px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .success {
+        background: #e5ffe5;
+        color: #176b17;
+    }
+
+    .error {
+        background: #ffe5e5;
+        color: #b30000;
+    }
+
+    .candidate-position {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .candidate-position label {
+        margin-bottom: 0;
+    }
+
+    .candidate-position input {
+        margin-bottom: 0;
+    }
+
+    .partylist-select {
+        margin-top: 22px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+    }
+
+    .partylist-select select {
+        margin-bottom: 20px;
+    }
+
+    @media (max-width: 750px) {
+
+        .forms {
+            grid-template-columns: 1fr;
+        }
+
+        .container {
+            width: 94%;
+        }
+
+        .candidate-position {
+            grid-template-columns: 1fr;
+            gap: 6px;
+        }
+
+        .candidate-position label {
+            margin-bottom: 2px;
+        }
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <h1>ACSI COLLEGE ILOILO</h1>
+    <p>ONLINE VOTING SYSTEM</p>
+</div>
+
+<div class="container">
+
+    <a href="/dashboard" class="back-btn">
+        ← Back to Dashboard
+    </a>
+
+    <!-- FLASH MESSAGE -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div class="message {% if category == 'success' %}success{% else %}error{% endif %}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <div class="forms">
+
+        <!-- ========================= -->
+        <!-- ADD PARTYLIST -->
+        <!-- ========================= -->
+
+        <div class="card">
+
+            <h2>Add Partylist</h2>
+
+            <form action="{{ url_for('add_partylist') }}" method="POST">
+
+    <label>Partylist Name</label>
+    <input type="text" name="partylist_name" required>
+
+    <label>Platform</label>
+    <textarea name="Platform" required></textarea>
+
+    <button type="submit">Add Partylist</button>
+
+</form>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- ADD CANDIDATES -->
+        <!-- ========================= -->
+
+        <div class="card">
+
+            <h2>Add Candidates</h2>
+
+            <form action="/add_candidate" method="POST">
+
+                <!-- PRESIDENT -->
+
+                <div class="candidate-position">
+
+                    <label for="president">
+                        President
+                    </label>
+
+                    <input
+                        type="text"
+                        id="president"
+                        name="president"
+                        placeholder="Enter candidate name"
+                    >
+
+                </div>
+
+
+                <!-- VICE PRESIDENT -->
+
+                <div class="candidate-position">
+
+                    <label for="vice_president">
+                        Vice President
+                    </label>
+
+                    <input
+                        type="text"
+                        id="vice_president"
+                        name="vice_president"
+                        placeholder="Enter candidate name"
+                    >
+
+                </div>
+
+
+                <!-- SECRETARY -->
+
+                <div class="candidate-position">
+
+                    <label for="secretary">
+                        Secretary
+                    </label>
+
+                    <input
+                        type="text"
+                        id="secretary"
+                        name="secretary"
+                        placeholder="Enter candidate name"
+                    >
+
+                </div>
+
+
+                <!-- TREASURER -->
+
+                <div class="candidate-position">
+
+                    <label for="treasurer">
+                        Treasurer
+                    </label>
+
+                    <input
+                        type="text"
+                        id="treasurer"
+                        name="treasurer"
+                        placeholder="Enter candidate name"
+                    >
+
+                </div>
+
+
+                <!-- AUDITOR -->
+
+                <div class="candidate-position">
+
+                    <label for="auditor">
+                        Auditor
+                    </label>
+
+                    <input
+                        type="text"
+                        id="auditor"
+                        name="auditor"
+                        placeholder="Enter candidate name"
+                    >
+
+                </div>
+
+
+                <!-- PUBLIC INFORMATION OFFICER -->
+
+                <div class="candidate-position">
+
+                    <label for="public_info_officer">
+                        Public Information Officer
+                    </label>
+
+                    <input
+                        type="text"
+                        id="public_info_officer"
+                        name="public_info_officer"
+                        placeholder="Enter candidate name"
+                    >
+
+                </div>
+
+
+                <!-- BSCS REPRESENTATIVE -->
+
+                <div class="candidate-position">
+
+                    <label for="bscs_representative">
+                        BSCS Representative
+                    </label>
+
+                    <input
+                        type="text"
+                        id="bscs_representative"
+                        name="bscs_representative"
+                        placeholder="Enter candidate name"
+                    >
+
+                </div>
+
+
+                <!-- BSIS REPRESENTATIVE -->
+
+                <div class="candidate-position">
+
+                    <label for="bsis_representative">
+                        BSIS Representative
+                    </label>
+
+                    <input
+                        type="text"
+                        id="bsis_representative"
+                        name="bsis_representative"
+                        placeholder="Enter candidate name"
+                    >
+
+                </div>
+
+
+                <!-- ACT REPRESENTATIVE -->
+
+                <div class="candidate-position">
+
+                    <label for="act_representative">
+                        ACT Representative
+                    </label>
+
+                    <input
+                        type="text"
+                        id="act_representative"
+                        name="act_representative"
+                        placeholder="Enter candidate name"
+                    >
+
+                </div>
+
+
+                <!-- SHS REPRESENTATIVE -->
+
+                <div class="candidate-position">
+
+                    <label for="shs_representative">
+                        SHS Representative
+                    </label>
+
+                    <input
+                        type="text"
+                        id="shs_representative"
+                        name="shs_representative"
+                        placeholder="Enter candidate name"
+                    >
+
+                </div>
+
+
+                <!-- PARTYLIST -->
+
+                <div class="partylist-select">
+
+                    <label for="partylist_id">
+                        Partylist
+                    </label>
+
+                    <select
+                        id="partylist_id"
+                        name="partylist_id"
+                        required
+                    >
+
+                        <option value="" disabled selected>
+                            Select Partylist
+                        </option>
+
+                        {% for partylist in partylists %}
+
+                            <option value="{{ partylist.id }}">
+                                {{ partylist.partylist_name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <button type="submit">
+                    ADD CANDIDATES
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

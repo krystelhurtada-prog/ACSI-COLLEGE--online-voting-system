@@ -1,0 +1,654 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>View Voters - ACSI College Iloilo</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        color: #111;
+    }
+
+    .header {
+        background: #b30000;
+        color: white;
+        text-align: center;
+        padding: 25px;
+    }
+
+    .header h1 {
+        font-size: 27px;
+    }
+
+    .header p {
+        margin-top: 6px;
+    }
+
+    .container {
+        width: 95%;
+        max-width: 1000px;
+        margin: 40px auto;
+    }
+
+    .box {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        border-top: 5px solid #b30000;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+        margin-bottom: 25px;
+    }
+
+    .main-title {
+        text-align: center;
+        color: #b30000;
+        margin-bottom: 25px;
+    }
+
+    /* COURSE DROPDOWN */
+
+    .filter-box {
+        margin-bottom: 30px;
+        text-align: left;
+    }
+
+    .filter-box label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #111;
+    }
+
+    .course-filter {
+        width: 100%;
+        max-width: 350px;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 15px;
+        background: white;
+    }
+
+    /* TOTAL VOTERS */
+
+    .total-voters {
+        margin-top: 15px;
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+    .total-voters span {
+        color: #b30000;
+    }
+
+    .course-title {
+        background: #b30000;
+        color: white;
+        padding: 12px 15px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        font-size: 20px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 700px;
+    }
+
+    th {
+        background: #111;
+        color: white;
+        padding: 14px;
+        text-align: left;
+    }
+
+    td {
+        padding: 13px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .voted {
+        color: #111;
+        font-weight: bold;
+    }
+
+    .not-voted {
+        color: #b30000;
+        font-weight: bold;
+    }
+
+    .no-voters {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+    }
+
+    .back {
+        display: inline-block;
+        margin-top: 25px;
+        padding: 12px 20px;
+        background: #b30000;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+
+    .back:hover {
+        background: #800000;
+    }
+
+    @media (max-width: 700px) {
+
+        .container {
+            width: 95%;
+        }
+
+        .box {
+            padding: 18px;
+        }
+
+        .course-filter {
+            max-width: 100%;
+        }
+
+        table {
+            font-size: 13px;
+        }
+
+        th,
+        td {
+            padding: 8px;
+        }
+
+    }
+
+</style>
+
+</head><body><div class="header"><h1>ACSI COLLEGE ILOILO</h1>
+
+<p>ONLINE VOTING SYSTEM</p>
+
+</div><div class="container"><div class="box">
+
+    <h2 class="main-title">
+        REGISTERED VOTERS
+    </h2>
+
+
+    <!-- ==================== COURSE DROPDOWN ==================== -->
+
+    <div class="filter-box">
+
+        <label for="courseFilter">
+            Select Course
+        </label>
+
+        <select
+            id="courseFilter"
+            class="course-filter"
+            onchange="filterCourse()"
+        >
+
+            <option value="BSCS">
+                BSCS
+            </option>
+
+            <option value="BSIS">
+                BSIS
+            </option>
+
+            <option value="ACT">
+                ACT
+            </option>
+
+            <option value="SHS">
+                SHS
+            </option>
+
+        </select>
+
+
+        <div class="total-voters">
+
+            Total Number of Voters:
+            <span id="totalVoters">0</span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================== BSCS ==================== -->
+
+    <div class="course-section" data-course="BSCS">
+
+        <h3 class="course-title">
+            BSCS
+        </h3>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>No.</th>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% set ns = namespace(count=0) %}
+
+                    {% for voter in voters %}
+
+                        {% if voter.get('course', '')|upper == 'BSCS' %}
+
+                            {% set ns.count = ns.count + 1 %}
+
+                            <tr class="voter-row">
+
+                                <td>
+                                    {{ ns.count }}
+                                </td>
+
+                                <td>
+                                    {{ voter.get('student_id', '') }}
+                                </td>
+
+                                <td>
+                                    {{ voter.get('student_name', '') }}
+                                </td>
+
+                                <td>
+
+                                    {% if voter.get('status','')|string|trim|lower =='voted' %}
+
+
+                                        <span class="voted">
+                                            Voted
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="not-voted">
+                                            Not Yet Voted
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    {% if ns.count == 0 %}
+
+                        <tr>
+
+                            <td colspan="4" class="no-voters">
+                                No BSCS voters registered.
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================== BSIS ==================== -->
+
+    <div class="course-section" data-course="BSIS">
+
+        <h3 class="course-title" style="margin-top:30px;">
+            BSIS
+        </h3>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>No.</th>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% set ns = namespace(count=0) %}
+
+                    {% for voter in voters %}
+
+                        {% if voter.get('course', '')|upper == 'BSIS' %}
+
+                            {% set ns.count = ns.count + 1 %}
+
+                            <tr class="voter-row">
+
+                                <td>
+                                    {{ ns.count }}
+                                </td>
+
+                                <td>
+                                    {{ voter.get('student_id', '') }}
+                                </td>
+
+                                <td>
+                                    {{ voter.get('student_name', '') }}
+                                </td>
+
+                                <td>
+
+                                    {% if voter.get('status','')|string|trim|lower =='voted' %}
+
+                                        <span class="voted">
+                                            Voted
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="not-voted">
+                                            Not Yet Voted
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    {% if ns.count == 0 %}
+
+                        <tr>
+
+                            <td colspan="4" class="no-voters">
+                                No BSIS voters registered.
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================== ACT ==================== -->
+
+    <div class="course-section" data-course="ACT">
+
+        <h3 class="course-title" style="margin-top:30px;">
+            ACT
+        </h3>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>No.</th>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% set ns = namespace(count=0) %}
+
+                    {% for voter in voters %}
+
+                        {% if voter.get('course', '')|upper == 'ACT' %}
+
+                            {% set ns.count = ns.count + 1 %}
+
+                            <tr class="voter-row">
+
+                                <td>
+                                    {{ ns.count }}
+                                </td>
+
+                                <td>
+                                    {{ voter.get('student_id', '') }}
+                                </td>
+
+                                <td>
+                                    {{ voter.get('student_name', '') }}
+                                </td>
+
+                                <td>
+
+                                    {% if voter.get('status', '')|string|trim|lower =='voted' %}
+
+                                        <span class="voted">
+                                            Voted
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="not-voted">
+                                            Not Yet Voted
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    {% if ns.count == 0 %}
+
+                        <tr>
+
+                            <td colspan="4" class="no-voters">
+                                No ACT voters registered.
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================== SHS ==================== -->
+
+    <div class="course-section" data-course="SHS">
+
+        <h3 class="course-title" style="margin-top:30px;">
+            SHS
+        </h3>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>No.</th>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% set ns = namespace(count=0) %}
+
+                    {% for voter in voters %}
+
+                        {% if voter.get('course', '')|upper == 'SHS' %}
+
+                            {% set ns.count = ns.count + 1 %}
+
+                            <tr class="voter-row">
+
+                                <td>
+                                    {{ ns.count }}
+                                </td>
+
+                                <td>
+                                    {{ voter.get('student_id', '') }}
+                                </td>
+
+                                <td>
+                                    {{ voter.get('student_name', '') }}
+                                </td>
+
+                                <td>
+
+                                    {% if voter.get('status','')|string|trim|lower =='voted' %}
+
+                                        <span>Voted</span>
+
+                                    {% else %}
+
+                                        <span>Not Yet Voted</span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    {% if ns.count == 0 %}
+
+                        <tr>
+
+                            <td colspan="4" class="no-voters">
+                                No SHS voters registered.
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- BACK BUTTON -->
+
+    <a href="{{ url_for('dashboard') }}" class="back">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</div><!-- ==================== COURSE FILTER ==================== --><script>
+
+function filterCourse() {
+
+    const selectedCourse =
+        document.getElementById("courseFilter").value;
+
+    const sections =
+        document.querySelectorAll(".course-section");
+
+    let total = 0;
+
+    sections.forEach(function(section) {
+
+        const course =
+            section.getAttribute("data-course");
+
+        if (selectedCourse === course) {
+
+            section.style.display = "block";
+
+            const voters =
+                section.querySelectorAll(".voter-row");
+
+            total = voters.length;
+
+        } else {
+
+            section.style.display = "none";
+
+        }
+
+    });
+
+    document.getElementById("totalVoters").textContent = total;
+
+}
+
+
+/* Show BSCS and calculate total when page loads */
+
+filterCourse();
+
+</script></body></html>
